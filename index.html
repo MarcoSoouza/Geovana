@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vídeo Exclusivo - Uma Visualização</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-inner">
+                <a href="#" class="logo">
+                    <div class="logo-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+                            <path d="M8 5.5V18.5L19 12L8 5.5Z" fill="white"/>
+                        </svg>
+                    </div>
+                    <span class="logo-text">VideoExclusivo</span>
+                    <div class="logo-subtitle">Uma única visualização</div>
+                </a>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="video-card" id="videoContainer">
+                <div class="video-wrapper" id="videoWrapper">
+                    <video id="videoPlayer" controlsList="nodownload" oncontextmenu="return false">
+                        <source src="" type="video/mp4">
+                        Seu navegador não suporta o elemento de vídeo.
+                    </video>
+                </div>
+                
+                <div class="upload-section" id="uploadSection">
+                    <div class="upload-icon-wrapper">
+                        <div class="upload-icon-bg"></div>
+                        <div class="upload-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#6366F1" stroke-width="1.5">
+                                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                                <polyline points="17 8 12 3 7 8"/>
+                                <line x1="12" y1="3" x2="12" y2="15"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <h2>Anexar Vídeo</h2>
+                    <p>Selecione um arquivo de vídeo do seu computador</p>
+                    <div class="upload-input-wrapper">
+                        <input type="file" id="videoInput" accept="video/*">
+                        <button class="btn btn-primary" id="selectVideoBtn">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                                <polyline points="17 8 12 3 7 8"/>
+                                <line x1="12" y1="3" x2="12" y2="15"/>
+                            </svg>
+                            Selecionar Vídeo
+                        </button>
+                    </div>
+                </div>
+
+                <div class="lock-overlay" id="lockOverlay">
+                    <div class="lock-icon-wrapper">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="1.5">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                            <path d="M7 11V7a5 5 0 0110 0v4"/>
+                        </svg>
+                    </div>
+                    <h2>Vídeo Já Assistido</h2>
+                    <p>Você já assistiu este vídeo. Ele foi removido e não pode mais ser visualizado.</p>
+                    <button class="btn btn-secondary" id="watchAgainBtn">Assistir Novamente (Demo)</button>
+                </div>
+
+                <div class="video-info hidden" id="videoInfo">
+                    <div class="video-details">
+                        <h3 id="videoTitle">Título do Vídeo</h3>
+                        <p id="videoDescription">Descrição do vídeo</p>
+                    </div>
+                    <div class="video-actions">
+                        <span class="watch-badge" id="watchBadge">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                            Visualização única
+                        </span>
+                        <button class="btn btn-danger" id="removeVideoBtn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="3 6 5 6 21 6"/>
+                                <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
+                            </svg>
+                            Remover
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="instructions">
+                <div class="instructions-header">
+                    <div class="instructions-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6366F1" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M12 16v-4M12 8h.01"/>
+                        </svg>
+                    </div>
+                    <h3>Como funciona</h3>
+                </div>
+                <ul>
+                    <li>
+                        <span class="step-number">1</span>
+                        <span>Selecione um vídeo do seu computador</span>
+                    </li>
+                    <li>
+                        <span class="step-number">2</span>
+                        <span>O cliente poderá assistir o vídeo apenas uma única vez</span>
+                    </li>
+                    <li>
+                        <span class="step-number">3</span>
+                        <span>Após assistir, o vídeo será removido automaticamente</span>
+                    </li>
+                    <li>
+                        <span class="step-number">4</span>
+                        <span>Use "Assistir Novamente" para testar a funcionalidade</span>
+                    </li>
+                </ul>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>VideoExclusivo - Todos os direitos reservados</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
