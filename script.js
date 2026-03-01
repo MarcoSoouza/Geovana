@@ -1,10 +1,11 @@
 /**
- * Video Exclusivo - Script Principal
- * Gerencia o upload, reprodução e controle de visualização única do vídeo
+ * VideoExclusivo - Script Principal
+ * Gerencia upload, reprodução e controle de visualização única
  */
 
 class VideoExclusivo {
     constructor() {
+        // Elementos do DOM
         this.videoPlayer = document.getElementById('videoPlayer');
         this.videoInput = document.getElementById('videoInput');
         this.selectVideoBtn = document.getElementById('selectVideoBtn');
@@ -16,10 +17,13 @@ class VideoExclusivo {
         this.videoDescription = document.getElementById('videoDescription');
         this.removeVideoBtn = document.getElementById('removeVideoBtn');
         this.watchAgainBtn = document.getElementById('watchAgainBtn');
+        this.videoLoading = document.getElementById('videoLoading');
         
+        // Chaves do localStorage
         this.storageKey = 'video_exclusivo_data';
         this.watchedKey = 'video_exclusivo_watched';
         
+        // Inicializar
         this.init();
     }
 
@@ -30,7 +34,8 @@ class VideoExclusivo {
 
     setupEventListeners() {
         // Selecionar vídeo através do botão
-        this.selectVideoBtn.addEventListener('click', () => {
+        this.selectVideoBtn.addEventListener('click', (e) => {
+            e.preventDefault();
             this.videoInput.click();
         });
 
@@ -42,20 +47,20 @@ class VideoExclusivo {
             }
         });
 
-        // Drag and drop
+        // Drag and drop na seção de upload
         this.uploadSection.addEventListener('dragover', (e) => {
             e.preventDefault();
-            this.uploadSection.style.borderColor = '#6366F1';
+            this.uploadSection.style.transform = 'scale(1.02)';
         });
 
         this.uploadSection.addEventListener('dragleave', (e) => {
             e.preventDefault();
-            this.uploadSection.style.borderColor = '';
+            this.uploadSection.style.transform = 'scale(1)';
         });
 
         this.uploadSection.addEventListener('drop', (e) => {
             e.preventDefault();
-            this.uploadSection.style.borderColor = '';
+            this.uploadSection.style.transform = 'scale(1)';
             const file = e.dataTransfer.files[0];
             if (file && file.type.startsWith('video/')) {
                 this.handleVideoUpload(file);
@@ -65,6 +70,15 @@ class VideoExclusivo {
         // Quando o vídeo termina de reproduzir
         this.videoPlayer.addEventListener('ended', () => {
             this.markAsWatched();
+        });
+
+        // Mostrar loading enquanto o vídeo carrega
+        this.videoPlayer.addEventListener('loadstart', () => {
+            this.videoLoading.style.display = 'flex';
+        });
+
+        this.videoPlayer.addEventListener('canplay', () => {
+            this.videoLoading.style.display = 'none';
         });
 
         // Remover vídeo
@@ -82,17 +96,18 @@ class VideoExclusivo {
         // Validar tipo do arquivo
         const validTypes = ['video/mp4', 'video/webm', 'video/ogg'];
         if (!validTypes.includes(file.type)) {
-            alert('Por favor, selecione um vídeo nos formatos: MP4, WebM ou OGG');
+            this.showAlert('Por favor, selecione um vídeo nos formatos: MP4, WebM ou OGG', 'error');
             return;
         }
 
         // Validar tamanho (máximo 500MB)
-        const maxSize = 500 * 1024 * 1024; // 500MB
+        const maxSize = 500 * 1024 * 1024;
         if (file.size > maxSize) {
-            alert('O vídeo deve ter no máximo 500MB');
+            this.showAlert('O vídeo deve ter no máximo 500MB', 'error');
             return;
         }
 
+        // Criar URL do objeto
         const videoURL = URL.createObjectURL(file);
         
         // Salvar dados do vídeo
@@ -106,6 +121,8 @@ class VideoExclusivo {
 
         this.saveVideoData(videoData);
         this.displayVideo(videoData);
+        
+        this.showAlert('Vídeo carregado com sucesso!', 'success');
     }
 
     displayVideo(videoData) {
@@ -116,7 +133,7 @@ class VideoExclusivo {
         this.videoTitle.textContent = videoData.name;
         this.videoDescription.textContent = this.formatFileSize(videoData.size);
         
-        // Mostrar elementos usando classes
+        // Mostrar elementos
         this.videoWrapper.classList.add('has-video');
         this.videoInfo.classList.remove('hidden');
         this.uploadSection.classList.add('hidden');
@@ -125,11 +142,12 @@ class VideoExclusivo {
         if (this.hasWatched()) {
             this.showLockedState();
         } else {
-            this.lockOverlay.classList.remove('visible');
+            this.lockOverlay.style.display = 'none';
+            
             // Iniciar reprodução automática
             this.videoPlayer.muted = true;
             this.videoPlayer.play().catch(error => {
-                console.log('Autoplay foi bloqueado pelo navegador');
+                console.log('Autoplay bloqueado pelo navegador');
             });
         }
     }
@@ -137,27 +155,16 @@ class VideoExclusivo {
     markAsWatched() {
         localStorage.setItem(this.watchedKey, 'true');
         
-        // Remove o vídeo completamente após assistido (sem confirmação)
+        // Remove o vídeo completamente após assistido
         this.removeVideo(false);
     }
 
     showLockedState() {
-        this.lockOverlay.classList.add('visible');
+        this.lockOverlay.style.display = 'flex';
         
         // Desabilitar controles do vídeo
         this.videoPlayer.controls = false;
         this.videoPlayer.pause();
-        
-        // Atualizar badge
-        const badge = document.getElementById('watchBadge');
-        badge.innerHTML = `
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <rect x="2" y="7" width="12" height="2" rx="1" fill="currentColor"/>
-            </svg>
-            Vídeo bloqueado
-        `;
-        badge.style.background = 'rgba(239, 68, 68, 0.1)';
-        badge.style.color = '#EF4444';
     }
 
     hasWatched() {
@@ -166,7 +173,7 @@ class VideoExclusivo {
 
     resetWatchedStatus() {
         localStorage.removeItem(this.watchedKey);
-        this.lockOverlay.classList.remove('visible');
+        this.lockOverlay.style.display = 'none';
         this.videoPlayer.controls = true;
         this.videoPlayer.muted = false;
         
@@ -176,14 +183,10 @@ class VideoExclusivo {
         
         // Atualizar badge
         const badge = document.getElementById('watchBadge');
-        badge.innerHTML = `
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path d="M4 8L7 11L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-            Visualização única
-        `;
-        badge.style.background = 'rgba(99, 102, 241, 0.1)';
-        badge.style.color = '#6366F1';
+        badge.innerHTML = '<span class="status-dot"></span><span>Uma visualização</span>';
+        badge.style.background = 'rgba(139, 92, 246, 0.1)';
+        badge.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+        badge.style.color = '#A78BFA';
     }
 
     saveVideoData(data) {
@@ -195,7 +198,6 @@ class VideoExclusivo {
         if (savedData) {
             try {
                 const videoData = JSON.parse(savedData);
-                // Verificar se o URL ainda é válido
                 if (videoData.url) {
                     this.displayVideo(videoData);
                 }
@@ -207,7 +209,6 @@ class VideoExclusivo {
     }
 
     removeVideo(askConfirmation = true) {
-        // Se askConfirmation for true, pergunta confirmação
         if (askConfirmation && !confirm('Tem certeza que deseja remover o vídeo?')) {
             return;
         }
@@ -215,28 +216,25 @@ class VideoExclusivo {
         // Limpar dados
         this.clearVideoData();
         
-        // Resetar interface usando classes
+        // Resetar interface
         this.videoPlayer.src = '';
         this.videoWrapper.classList.remove('has-video');
         this.videoInfo.classList.add('hidden');
         this.uploadSection.classList.remove('hidden');
-        this.lockOverlay.classList.remove('visible');
+        this.lockOverlay.style.display = 'none';
         this.videoInput.value = '';
+        this.videoLoading.style.display = 'none';
         
         // Resetar badge
         const badge = document.getElementById('watchBadge');
-        badge.innerHTML = `
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path d="M4 8L7 11L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-            Visualização única
-        `;
-        badge.style.background = 'rgba(99, 102, 241, 0.1)';
-        badge.style.color = '#6366F1';
+        badge.innerHTML = '<span class="status-dot"></span><span>Uma visualização</span>';
+        badge.style.background = 'rgba(139, 92, 246, 0.1)';
+        badge.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+        badge.style.color = '#A78BFA';
         
         // Se chamado automaticamente (vídeo assistido), mostra mensagem
         if (!askConfirmation) {
-            alert('Vídeo assistido com sucesso! O vídeo foi removido e não pode mais ser visualizado.');
+            this.showAlert('Vídeo assistido com sucesso! O vídeo foi removido.', 'success');
         }
     }
 
@@ -254,7 +252,75 @@ class VideoExclusivo {
         
         return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
     }
+
+    showAlert(message, type = 'info') {
+        // Remover alertas existentes
+        const existingAlert = document.querySelector('.custom-alert');
+        if (existingAlert) {
+            existingAlert.remove();
+        }
+
+        // Criar elemento de alerta
+        const alert = document.createElement('div');
+        alert.className = `custom-alert alert-${type}`;
+        alert.innerHTML = `
+            <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+            <span>${message}</span>
+        `;
+
+        // Estilos do alerta
+        alert.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 16px 24px;
+            background: ${type === 'success' ? 'rgba(16, 185, 129, 0.95)' : type === 'error' ? 'rgba(239, 68, 68, 0.95)' : 'rgba(139, 92, 246, 0.95)'};
+            color: white;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 15px;
+            font-weight: 500;
+            z-index: 10000;
+            animation: slideIn 0.3s ease-out;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        `;
+
+        // Adicionar animação
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        document.body.appendChild(alert);
+
+        // Remover após 3 segundos
+        setTimeout(() => {
+            alert.style.animation = 'slideIn 0.3s ease-out reverse';
+            setTimeout(() => alert.remove(), 300);
+        }, 3000);
+    }
 }
+
+// Adicionar estilos de animação globais
+const globalStyles = document.createElement('style');
+globalStyles.textContent = `
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
+    body {
+        font-family: 'Outfit', sans-serif;
+    }
+`;
+document.head.appendChild(globalStyles);
 
 // Inicializar quando o DOM estiver pronto
 document.addEventListener('DOMContentLoaded', () => {

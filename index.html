@@ -3,132 +3,208 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vídeo Exclusivo - Uma Visualização</title>
+    <title>VideoExclusivo - Assista Uma Vez</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+    <!-- Animated Background -->
+    <div class="bg-animation">
+        <div class="bg-gradient"></div>
+        <div class="bg-grid"></div>
+        <div class="floating-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+        </div>
+    </div>
+
     <div class="container">
+        <!-- Header -->
         <header class="header">
-            <div class="header-inner">
-                <a href="#" class="logo">
+            <div class="header-content">
+                <div class="logo-container">
                     <div class="logo-icon">
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-                            <path d="M8 5.5V18.5L19 12L8 5.5Z" fill="white"/>
-                        </svg>
+                        <div class="logo-glow"></div>
+                        <i class="fas fa-play"></i>
                     </div>
-                    <span class="logo-text">VideoExclusivo</span>
-                    <div class="logo-subtitle">Uma única visualização</div>
-                </a>
+                    <div class="logo-text">
+                        <span class="brand-name">VideoExclusivo</span>
+                        <span class="brand-tagline">Assista apenas uma vez</span>
+                    </div>
+                </div>
+                <div class="header-badge">
+                    <span class="pulse-dot"></span>
+                    <span>Online</span>
+                </div>
             </div>
         </header>
 
+        <!-- Main Content -->
         <main class="main-content">
+            <!-- Hero Section -->
+            <div class="hero-section">
+                <h1 class="hero-title">
+                    <span class="title-line">Vídeo</span>
+                    <span class="title-gradient">Exclusivo</span>
+                </h1>
+                <p class="hero-subtitle">Compartilhe vídeos que podem ser assistidos apenas uma única vez</p>
+            </div>
+
+            <!-- Video Card -->
             <div class="video-card" id="videoContainer">
-                <div class="video-wrapper" id="videoWrapper">
-                    <video id="videoPlayer" controlsList="nodownload" oncontextmenu="return false">
-                        <source src="" type="video/mp4">
-                        Seu navegador não suporta o elemento de vídeo.
-                    </video>
-                </div>
-                
-                <div class="upload-section" id="uploadSection">
-                    <div class="upload-icon-wrapper">
-                        <div class="upload-icon-bg"></div>
-                        <div class="upload-icon">
-                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#6366F1" stroke-width="1.5">
-                                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
-                                <polyline points="17 8 12 3 7 8"/>
-                                <line x1="12" y1="3" x2="12" y2="15"/>
-                            </svg>
+                <div class="card-glow"></div>
+                <div class="card-inner">
+                    <div class="video-wrapper" id="videoWrapper">
+                        <video id="videoPlayer" controlsList="nodownload" oncontextmenu="return false">
+                            <source src="" type="video/mp4">
+                        </video>
+                        <div class="video-loading" id="videoLoading">
+                            <div class="loader"></div>
                         </div>
                     </div>
-                    <h2>Anexar Vídeo</h2>
-                    <p>Selecione um arquivo de vídeo do seu computador</p>
-                    <div class="upload-input-wrapper">
-                        <input type="file" id="videoInput" accept="video/*">
-                        <button class="btn btn-primary" id="selectVideoBtn">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
-                                <polyline points="17 8 12 3 7 8"/>
-                                <line x1="12" y1="3" x2="12" y2="15"/>
-                            </svg>
-                            Selecionar Vídeo
+                    
+                    <!-- Upload Section -->
+                    <div class="upload-section" id="uploadSection">
+                        <div class="upload-visual">
+                            <div class="upload-circle">
+                                <div class="circle-inner">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                </div>
+                                <div class="circle-ring"></div>
+                                <div class="circle-ring ring-2"></div>
+                            </div>
+                        </div>
+                        <h2>Anexar Vídeo</h2>
+                        <p>Selecione um vídeo do seu computador para começar</p>
+                        <div class="upload-formats">
+                            <span><i class="fas fa-file-video"></i> MP4</span>
+                            <span><i class="fas fa-file-video"></i> WebM</span>
+                            <span><i class="fas fa-file-video"></i> OGG</span>
+                        </div>
+                        <div class="upload-button-wrapper">
+                            <input type="file" id="videoInput" accept="video/*" hidden>
+                            <button class="btn btn-primary btn-lg" id="selectVideoBtn">
+                                <i class="fas fa-folder-open"></i>
+                                Selecionar Vídeo
+                            </button>
+                        </div>
+                        <p class="upload-hint">ou arraste e solte o arquivo aqui</p>
+                    </div>
+
+                    <!-- Lock Overlay -->
+                    <div class="lock-overlay" id="lockOverlay">
+                        <div class="lock-visual">
+                            <div class="lock-icon">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                            <div class="lock-circle"></div>
+                        </div>
+                        <h2><i class="fas fa-exclamation-triangle"></i> Vídeo Já Assistido</h2>
+                        <p>Este vídeo foi assistido e removido permanentemente</p>
+                        <div class="watched-info">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Visualização concluída</span>
+                        </div>
+                        <button class="btn btn-secondary btn-lg" id="watchAgainBtn">
+                            <i class="fas fa-redo"></i>
+                            Testar Novamente
                         </button>
                     </div>
-                </div>
 
-                <div class="lock-overlay" id="lockOverlay">
-                    <div class="lock-icon-wrapper">
-                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="1.5">
-                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                            <path d="M7 11V7a5 5 0 0110 0v4"/>
-                        </svg>
-                    </div>
-                    <h2>Vídeo Já Assistido</h2>
-                    <p>Você já assistiu este vídeo. Ele foi removido e não pode mais ser visualizado.</p>
-                    <button class="btn btn-secondary" id="watchAgainBtn">Assistir Novamente (Demo)</button>
-                </div>
-
-                <div class="video-info hidden" id="videoInfo">
-                    <div class="video-details">
-                        <h3 id="videoTitle">Título do Vídeo</h3>
-                        <p id="videoDescription">Descrição do vídeo</p>
-                    </div>
-                    <div class="video-actions">
-                        <span class="watch-badge" id="watchBadge">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                                <circle cx="12" cy="12" r="3"/>
-                            </svg>
-                            Visualização única
-                        </span>
-                        <button class="btn btn-danger" id="removeVideoBtn">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polyline points="3 6 5 6 21 6"/>
-                                <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
-                            </svg>
-                            Remover
-                        </button>
+                    <!-- Video Info -->
+                    <div class="video-info hidden" id="videoInfo">
+                        <div class="info-main">
+                            <div class="info-icon">
+                                <i class="fas fa-film"></i>
+                            </div>
+                            <div class="info-text">
+                                <h3 id="videoTitle">Título do Vídeo</h3>
+                                <p id="videoDescription">Tamanho do arquivo</p>
+                            </div>
+                        </div>
+                        <div class="info-actions">
+                            <div class="status-badge" id="watchBadge">
+                                <span class="status-dot"></span>
+                                <span>Uma visualização</span>
+                            </div>
+                            <button class="btn btn-icon" id="removeVideoBtn" title="Remover vídeo">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="instructions">
-                <div class="instructions-header">
-                    <div class="instructions-icon">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6366F1" stroke-width="2">
-                            <circle cx="12" cy="12" r="10"/>
-                            <path d="M12 16v-4M12 8h.01"/>
-                        </svg>
+            <!-- Features -->
+            <div class="features-section">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-user-clock"></i>
                     </div>
-                    <h3>Como funciona</h3>
+                    <h4>Visualização Única</h4>
+                    <p>O vídeo pode ser assistido apenas uma vez</p>
                 </div>
-                <ul>
-                    <li>
-                        <span class="step-number">1</span>
-                        <span>Selecione um vídeo do seu computador</span>
-                    </li>
-                    <li>
-                        <span class="step-number">2</span>
-                        <span>O cliente poderá assistir o vídeo apenas uma única vez</span>
-                    </li>
-                    <li>
-                        <span class="step-number">3</span>
-                        <span>Após assistir, o vídeo será removido automaticamente</span>
-                    </li>
-                    <li>
-                        <span class="step-number">4</span>
-                        <span>Use "Assistir Novamente" para testar a funcionalidade</span>
-                    </li>
-                </ul>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h4>Seguro</h4>
+                    <p>Remoção automática após reprodução</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h4>Rápido</h4>
+                    <p>Reprodução automática ao anexar</p>
+                </div>
+            </div>
+
+            <!-- Instructions -->
+            <div class="instructions-card">
+                <div class="instructions-header">
+                    <i class="fas fa-info-circle"></i>
+                    <h3>Como usar</h3>
+                </div>
+                <div class="instructions-list">
+                    <div class="instruction-item">
+                        <div class="instruction-number">01</div>
+                        <div class="instruction-content">
+                            <h4>Selecione o vídeo</h4>
+                            <p>Clique no botão para escolher um arquivo de vídeo</p>
+                        </div>
+                    </div>
+                    <div class="instruction-item">
+                        <div class="instruction-number">02</div>
+                        <div class="instruction-content">
+                            <h4>Vídeo é reproduzido</h4>
+                            <p>O vídeo começa a tocar automaticamente</p>
+                        </div>
+                    </div>
+                    <div class="instruction-item">
+                        <div class="instruction-number">03</div>
+                        <div class="instruction-content">
+                            <h4>Vídeo removido</h4>
+                            <p>Após assistir, o vídeo é removido automaticamente</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </main>
 
+        <!-- Footer -->
         <footer class="footer">
-            <p>VideoExclusivo - Todos os direitos reservados</p>
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <i class="fas fa-play-circle"></i>
+                    <span>VideoExclusivo</span>
+                </div>
+                <p>&copy; 2024 Todos os direitos reservados</p>
+            </div>
         </footer>
     </div>
 
